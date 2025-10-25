@@ -194,6 +194,7 @@ MonoBehaviour:
       - rid: 3998157809657577496
       - rid: 3998157809657577497
       - rid: 3998157809657577498
+      - rid: 3998157898338795521
     m_RuntimeSettings:
       m_List: []
   renderingLayerNames:
@@ -681,6 +682,10 @@ MonoBehaviour:
       data:
         m_Version: 0
         m_CoreCopyPS: {fileID: 4800000, guid: 12dc59547ea167a4ab435097dd0f9add, type: 3}
+    - rid: 3998157898338795521
+      type: {class: RenderingDebuggerRuntimeResources, ns: UnityEngine.Rendering, asm: Unity.RenderPipelines.Core.Runtime}
+      data:
+        m_version: 0
     - rid: 8556427327610290176
       type: {class: HDRenderPipelineRuntimeAssets, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
       data:
