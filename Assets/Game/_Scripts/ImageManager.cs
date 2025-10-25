@@ -6,20 +6,21 @@ namespace Game._Scripts {
     public static ImageManager Instance { get; private set; }
 
     private void Awake() {
-      if (Instance) {
-        Destroy(gameObject);
+      if (Instance == null) {
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
       }
       else {
-        Instance = this;
+        Destroy(gameObject);
       }
-      DontDestroyOnLoad(gameObject);
     }
 
-    [SerializeField] private Sprite[] _images;
-    
-    
+    [SerializeField]
+    private Sprite[] images;
+
+
     public Sprite GetRandomImage() {
-      return _images[Random.Range(0, _images.Length)];
+      return images[Random.Range(0, images.Length)];
     }
   }
 }

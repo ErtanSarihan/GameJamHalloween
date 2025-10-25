@@ -6,6 +6,7 @@ namespace Game._Scripts {
   public class HammerHitController : MonoBehaviour {
     public static event Action OnHammerHit;
     public static event Action OnRepeatingButtonsHit;
+    public static event Action NonGlitchingImageHit;
 
     private enum HitButton {
       None,
@@ -26,7 +27,7 @@ namespace Game._Scripts {
         }
         else {
           _lastButtonPressed = HitButton.Mouse;
-          OnHammerHit?.Invoke();
+          HammerHit();
         }
       }
       else if (spacePressed) {
@@ -36,9 +37,22 @@ namespace Game._Scripts {
         }
         else {
           _lastButtonPressed = HitButton.Space;
-          OnHammerHit?.Invoke();
+          HammerHit();
         }
       }
+    }
+
+
+    private void HammerHit() {
+      if (DisplayManager.Instance.isGlitching) {
+        // score ++ 
+        DisplayManager.Instance.HideGlitch();
+      }
+      else {
+        NonGlitchingImageHit?.Invoke();
+        return;
+      }
+      OnHammerHit?.Invoke();
     }
   }
 }

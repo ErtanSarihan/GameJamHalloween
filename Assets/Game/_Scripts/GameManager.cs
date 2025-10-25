@@ -5,14 +5,13 @@ namespace Game._Scripts {
     public static GameManager Instance;
 
     private void Awake() {
-      if (Instance) {
-        Destroy(gameObject);
+      if (Instance == null) {
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
       }
       else {
-        Instance = this;
+        Destroy(gameObject);
       }
-
-      DontDestroyOnLoad(gameObject);
     }
 
     private float _gameTime = 0f;

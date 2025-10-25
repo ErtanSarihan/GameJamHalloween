@@ -6,13 +6,13 @@ namespace Game._Scripts {
     public static DisplayManager Instance;
 
     private void Awake() {
-      if (Instance) {
-        Destroy(gameObject);
+      if (Instance == null) {
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
       }
       else {
-        Instance = this;
+        Destroy(gameObject);
       }
-      DontDestroyOnLoad(gameObject);
     }
 
 
