@@ -4,9 +4,9 @@ using UnityEngine.InputSystem;
 
 namespace Game._Scripts {
   public class HammerHitController : MonoBehaviour {
-    public static event Action OnHammerHit;
     public static event Action OnRepeatingButtonsHit;
-    public static event Action NonGlitchingImageHit;
+    public static event Action OnNonGlitchingImageHit;
+    public static event Action OnGlitchingImageHit;
 
     private enum HitButton {
       None,
@@ -46,13 +46,12 @@ namespace Game._Scripts {
     private void HammerHit() {
       if (DisplayManager.Instance.isGlitching) {
         // score ++ 
+        OnGlitchingImageHit?.Invoke();
         DisplayManager.Instance.HideGlitch();
       }
       else {
-        NonGlitchingImageHit?.Invoke();
-        return;
+        OnNonGlitchingImageHit?.Invoke();
       }
-      OnHammerHit?.Invoke();
     }
   }
 }

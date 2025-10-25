@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -13,7 +12,9 @@ namespace Game._Scripts {
 
     private void Start() {
       _rubberHammerTransform = transform;
-      HammerHitController.OnHammerHit += OnHammerHit;
+      HammerHitController.OnGlitchingImageHit += OnHammerHit;
+      HammerHitController.OnNonGlitchingImageHit += OnHammerHit;
+      
     }
 
     private void OnHammerHit() {
@@ -49,7 +50,8 @@ namespace Game._Scripts {
     }
 
     private void OnDestroy() {
-      HammerHitController.OnHammerHit -= OnHammerHit;
+      HammerHitController.OnGlitchingImageHit -= OnHammerHit;
+      HammerHitController.OnNonGlitchingImageHit -= OnHammerHit;
     }
   }
 }

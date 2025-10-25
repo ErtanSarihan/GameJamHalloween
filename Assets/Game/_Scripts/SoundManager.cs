@@ -20,7 +20,8 @@ namespace Game._Scripts {
     }
 
     private void Start() {
-      HammerHitController.OnHammerHit += OnHammerHit;
+      HammerHitController.OnGlitchingImageHit += OnHammerHit;
+      HammerHitController.OnNonGlitchingImageHit += OnHammerHit;
     }
 
 
@@ -29,7 +30,8 @@ namespace Game._Scripts {
     }
 
     private void OnDestroy() {
-      HammerHitController.OnHammerHit -= OnHammerHit;
+      HammerHitController.OnGlitchingImageHit -= OnHammerHit;
+      HammerHitController.OnNonGlitchingImageHit -= OnHammerHit;
     }
   }
 }
