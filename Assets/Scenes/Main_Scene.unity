@@ -8262,6 +8262,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hammerOnHitSound: {fileID: 8300000, guid: 7f9cceec515eb469293c65b575709d6f, type: 3}
   gameOverSound: {fileID: 8300000, guid: dfcabe9b2208448d59da62bcf6afda67, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 6331d2df2f44f43a2b041dd71caf8c75, type: 3}
+  musicVolume: 0.3
+  sfxVolume: 0.15
 --- !u!4 &1512669879
 Transform:
   m_ObjectHideFlags: 0

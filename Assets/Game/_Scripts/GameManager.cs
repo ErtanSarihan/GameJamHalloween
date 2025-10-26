@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Game._Scripts {
@@ -13,6 +14,10 @@ namespace Game._Scripts {
         Destroy(gameObject);
       }
     }
+
+    public static event Action OnGameStarted;
+    public static event Action OnGameOver;
+
 
     [SerializeField]
     private GameObject gameOverPanel;
@@ -31,9 +36,14 @@ namespace Game._Scripts {
       DisplayManager.OnGlitchMiss += EndGame;
     }
 
+    private void Start() {
+      OnGameStarted?.Invoke();
+    }
+
     private void EndGame() {
       Time.timeScale = 0f;
       gameOverPanel.SetActive(true);
+      OnGameOver?.Invoke();
       Debug.Log("Game Ended");
     }
 
