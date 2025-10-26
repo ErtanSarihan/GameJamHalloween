@@ -89,9 +89,16 @@ namespace Game._Scripts {
       gameOverPanel.SetActive(false);
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
       DisplayManager.OnGlitchMiss -= EndGame;
       HammerHitController.OnNonGlitchingImageHit -= EndGame;
+    }
+    
+    public void QuitGame() {
+      Debug.Log("Game Quit");
+      Application.Quit();
+      UnityEditor.EditorApplication.isPlaying = false;
     }
   }
 }
