@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Game._Scripts {
   public class DisplayManager : MonoBehaviour {
@@ -15,6 +17,8 @@ namespace Game._Scripts {
       }
     }
 
+    public static event Action OnGlitchMiss;
+
 
     [SerializeField]
     private Image imageDisplay;
@@ -25,14 +29,16 @@ namespace Game._Scripts {
     [SerializeField]
     [Range(0f, 1f)]
     [Tooltip("Probability of showing glitch when setting a random image (0 = never, 1 = always)")]
-    private float glitchChance = 0.3f;
+    private float glitchChance = 1f;
 
     private void Start() {
       SetRandomImage();
-      HideGlitch();
     }
 
     public void SetRandomImage() {
+      if (isGlitching) {
+        OnGlitchMiss?.Invoke();
+      }
       Sprite image = ImageManager.Instance.GetRandomImage();
       imageDisplay.sprite = image;
 

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Game._Scripts {
   public class GameManager : MonoBehaviour {
@@ -15,6 +14,9 @@ namespace Game._Scripts {
       }
     }
 
+    [SerializeField]
+    private GameObject gameOverPanel;
+
     private float _gameTime;
     [SerializeField]
     private float delayTime = 2f;
@@ -24,8 +26,15 @@ namespace Game._Scripts {
     private float delayReduction = .1f;
 
 
-    private void Start() {
-      DisplayManager.Instance.SetRandomImage();
+    private void OnEnable() {
+      HammerHitController.OnNonGlitchingImageHit += EndGame;
+      DisplayManager.OnGlitchMiss += EndGame;
+    }
+
+    private void EndGame() {
+      Time.timeScale = 0f;
+      gameOverPanel.SetActive(true);
+      Debug.Log("Game Ended");
     }
 
 
@@ -43,6 +52,11 @@ namespace Game._Scripts {
           delayTime = minDelayTime;
         }
       }
+    }
+
+    private void OnDisable() {
+      DisplayManager.OnGlitchMiss -= EndGame;
+      HammerHitController.OnNonGlitchingImageHit -= EndGame;
     }
   }
 }
