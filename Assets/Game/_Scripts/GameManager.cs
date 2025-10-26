@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Game._Scripts {
   public class GameManager : MonoBehaviour {
@@ -30,8 +31,10 @@ namespace Game._Scripts {
     [SerializeField]
     private float delayReduction = .1f;
 
+    private bool _waitingForRestart;
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
       HammerHitController.OnNonGlitchingImageHit += EndGame;
       DisplayManager.OnGlitchMiss += EndGame;
     }
@@ -44,24 +47,46 @@ namespace Game._Scripts {
       Time.timeScale = 0f;
       gameOverPanel.SetActive(true);
       OnGameOver?.Invoke();
+      _waitingForRestart = true;
       Debug.Log("Game Ended");
     }
 
 
-    private void Update() {
+    private void Update()
+    {
+      if (_waitingForRestart)
+      {
+        if (Keyboard.current.fKey.wasPressedThisFrame)
+        {
+          RestartGame();
+          return;
+        }
+
+
+      }
       _gameTime += Time.deltaTime;
 
-      if (_gameTime >= delayTime) {
+      if (_gameTime >= delayTime)
+      {
         _gameTime = 0f;
         // Debug.Log("Timer finished!");
         DisplayManager.Instance.SetRandomImage();
-        if (delayTime > minDelayTime) {
+        if (delayTime > minDelayTime)
+        {
           delayTime -= delayReduction;
         }
-        else {
+        else
+        {
           delayTime = minDelayTime;
         }
       }
+    }
+    
+    private void RestartGame() {
+      Time.timeScale = 1f;
+      _waitingForRestart = false;
+      _gameTime = 0f;
+      gameOverPanel.SetActive(false);
     }
 
     private void OnDisable() {
