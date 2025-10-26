@@ -45,7 +45,6 @@ namespace Game._Scripts {
 
     private void HammerHit() {
       if (DisplayManager.Instance.isGlitching) {
-        // score ++ 
         OnGlitchingImageHit?.Invoke();
         DisplayManager.Instance.HideGlitch();
       }
