@@ -4,6 +4,9 @@ using Random = UnityEngine.Random;
 namespace Game._Scripts {
   public class ImageManager : MonoBehaviour {
     public static ImageManager Instance { get; private set; }
+    
+    private static int _lastReturnedIndex = -1;
+    private static int _index;
 
     private void Awake() {
       if (Instance == null) {
@@ -20,7 +23,12 @@ namespace Game._Scripts {
 
 
     public Sprite GetRandomImage() {
-      return images[Random.Range(0, images.Length)];
+      do {
+        _index = Random.Range(0, images.Length);
+      } while (_index == _lastReturnedIndex);
+      
+      _lastReturnedIndex = _index;
+      return images[_index];
     }
   }
 }
