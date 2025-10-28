@@ -18,6 +18,7 @@ namespace Game._Scripts {
 
     public static event Action OnGameStarted;
     public static event Action OnGameOver;
+    public static event Action OnRestartGame;
 
 
     [SerializeField]
@@ -33,9 +34,9 @@ namespace Game._Scripts {
 
     private bool _waitingForRestart;
 
-    private void OnEnable()
-    {
+    private void OnEnable() {
       HammerHitController.OnNonGlitchingImageHit += EndGame;
+      HammerHitController.OnRepeatingButtonsHit += EndGame;
       DisplayManager.OnGlitchMiss += EndGame;
     }
 
@@ -44,57 +45,51 @@ namespace Game._Scripts {
     }
 
     private void EndGame() {
+      OnGameOver?.Invoke();
       Time.timeScale = 0f;
       gameOverPanel.SetActive(true);
-      OnGameOver?.Invoke();
       _waitingForRestart = true;
       Debug.Log("Game Ended");
     }
 
 
-    private void Update()
-    {
-      if (_waitingForRestart)
-      {
-        if (Keyboard.current.fKey.wasPressedThisFrame)
-        {
+    private void Update() {
+      if (_waitingForRestart) {
+        if (Keyboard.current.fKey.wasPressedThisFrame) {
           RestartGame();
           return;
         }
-
-
       }
+
       _gameTime += Time.deltaTime;
 
-      if (_gameTime >= delayTime)
-      {
+      if (_gameTime >= delayTime) {
         _gameTime = 0f;
         // Debug.Log("Timer finished!");
         DisplayManager.Instance.SetRandomImage();
-        if (delayTime > minDelayTime)
-        {
+        if (delayTime > minDelayTime) {
           delayTime -= delayReduction;
         }
-        else
-        {
+        else {
           delayTime = minDelayTime;
         }
       }
     }
-    
+
     private void RestartGame() {
+      OnRestartGame?.Invoke();
       Time.timeScale = 1f;
       _waitingForRestart = false;
       _gameTime = 0f;
       gameOverPanel.SetActive(false);
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() {
       DisplayManager.OnGlitchMiss -= EndGame;
       HammerHitController.OnNonGlitchingImageHit -= EndGame;
+      HammerHitController.OnRepeatingButtonsHit -= EndGame;
     }
-    
+
     public void QuitGame() {
       Debug.Log("Game Quit");
       Application.Quit();

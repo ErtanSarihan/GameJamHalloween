@@ -15,12 +15,19 @@ namespace Game._Scripts {
     }
 
     private HitButton _lastButtonPressed = HitButton.None;
+    private bool _isGameOver;
+
+    private void OnEnable() {
+      GameManager.OnGameOver += OnGameOver;
+      GameManager.OnRestartGame += OnRestartGame;
+    }
+
 
     private void Update() {
       bool mousePressed = Mouse.current.leftButton.wasPressedThisFrame;
       bool spacePressed = Keyboard.current.spaceKey.wasPressedThisFrame;
 
-      if (mousePressed) {
+      if (mousePressed && !_isGameOver) {
         if (_lastButtonPressed == HitButton.Mouse) {
           OnRepeatingButtonsHit?.Invoke();
           // Debug.Log("Repeating buttons hit: mouse left clicked");
@@ -30,7 +37,7 @@ namespace Game._Scripts {
           HammerHit();
         }
       }
-      else if (spacePressed) {
+      else if (spacePressed && !_isGameOver) {
         if (_lastButtonPressed == HitButton.Space) {
           OnRepeatingButtonsHit?.Invoke();
           // Debug.Log("Repeating buttons hit: space clicked");
@@ -51,6 +58,21 @@ namespace Game._Scripts {
       else {
         OnNonGlitchingImageHit?.Invoke();
       }
+    }
+
+    private void OnGameOver() {
+      _isGameOver = true;
+    }
+
+    private void OnRestartGame() {
+      _lastButtonPressed = HitButton.None;
+      _isGameOver = false;
+    }
+
+
+    private void OnDisable() {
+      GameManager.OnGameOver -= OnGameOver;
+      GameManager.OnRestartGame -= OnRestartGame;
     }
   }
 }

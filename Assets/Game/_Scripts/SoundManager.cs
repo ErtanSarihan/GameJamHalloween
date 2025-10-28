@@ -46,10 +46,10 @@ namespace Game._Scripts {
       HammerHitController.OnGlitchingImageHit += OnHammerHit;
       HammerHitController.OnNonGlitchingImageHit += OnHammerHit;
       GameManager.OnGameStarted += OnGameStarted;
+      GameManager.OnRestartGame += OnGameRestarted;
       GameManager.OnGameOver += OnGameOver;
     }
-    
-    
+
 
     private void OnGameOver() {
       backgroundMusicSource.Stop();
@@ -58,6 +58,11 @@ namespace Game._Scripts {
 
     private void OnGameStarted() {
       backgroundMusicSource.clip = backgroundMusic;
+      backgroundMusicSource.Play();
+    }
+    
+    private void OnGameRestarted() {
+      sfxSource.Stop();
       backgroundMusicSource.Play();
     }
 
@@ -70,6 +75,7 @@ namespace Game._Scripts {
       HammerHitController.OnGlitchingImageHit -= OnHammerHit;
       HammerHitController.OnNonGlitchingImageHit -= OnHammerHit;
       GameManager.OnGameStarted -= OnGameStarted;
+      GameManager.OnRestartGame -= OnGameRestarted;
       GameManager.OnGameOver -= OnGameOver;
     }
   }

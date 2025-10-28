@@ -24,11 +24,18 @@ namespace Game._Scripts {
       _score = 0;
       scoreText.text = _score.ToString();
       HammerHitController.OnGlitchingImageHit += OnGlitchingImageHit;
+      GameManager.OnRestartGame += ResetScore;
     }
 
     private void OnGlitchingImageHit() {
       _score += 100;
       scoreText.text = _score.ToString();
     }
+
+    private void ResetScore() {
+      _score = 0;
+      scoreText.text = _score.ToString();
+    }
+
   }
 }
