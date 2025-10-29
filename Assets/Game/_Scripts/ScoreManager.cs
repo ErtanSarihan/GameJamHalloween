@@ -6,9 +6,12 @@ namespace Game._Scripts {
     public static ScoreManager Instance { get; private set; }
 
     private int _score;
+    private int _highScore;
 
     [SerializeField]
     private TextMeshProUGUI scoreText;
+    [SerializeField]
+    private TextMeshProUGUI highScoreText;
     
     private void Awake() {
       if (Instance == null) {
@@ -22,20 +25,34 @@ namespace Game._Scripts {
 
     private void Start() {
       _score = 0;
-      scoreText.text = _score.ToString();
+      _highScore = PlayerPrefs.GetInt("HighScore", 0);
+
+
+      UpdateScoreUI();
       HammerHitController.OnGlitchingImageHit += OnGlitchingImageHit;
       GameManager.OnRestartGame += ResetScore;
     }
 
     private void OnGlitchingImageHit() {
       _score += 100;
-      scoreText.text = _score.ToString();
+
+      if (_score > _highScore) {
+        _highScore = _score;
+        PlayerPrefs.SetInt("HighScore", _highScore);
+        PlayerPrefs.Save();
+      }
+      UpdateScoreUI();
     }
 
     private void ResetScore() {
       _score = 0;
-      scoreText.text = _score.ToString();
-    }
 
+      UpdateScoreUI();
+    }
+    private void UpdateScoreUI() {
+      scoreText.text = _score.ToString();
+      if (highScoreText != null)
+        highScoreText.text = _highScore.ToString();
+    }
   }
 }
