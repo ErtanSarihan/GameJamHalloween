@@ -31,9 +31,7 @@ namespace Game._Scripts {
     [Tooltip("Probability of showing glitch when setting a random image (0 = never, 1 = always)")]
     private float glitchChance = 1f;
 
-    private void Start() {
-      SetRandomImage();
-    }
+  
 
     public void SetRandomImage() {
       if (isGlitching) {

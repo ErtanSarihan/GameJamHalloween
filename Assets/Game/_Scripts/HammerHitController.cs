@@ -16,14 +16,17 @@ namespace Game._Scripts {
 
     private HitButton _lastButtonPressed = HitButton.None;
     private bool _isGameOver;
+    private bool _isGameStart;
 
     private void OnEnable() {
+      GameManager.OnGameStarted += OnGameStarted;
       GameManager.OnGameOver += OnGameOver;
       GameManager.OnRestartGame += OnRestartGame;
     }
 
 
     private void Update() {
+      if (!_isGameStart) return;
       bool mousePressed = Mouse.current.leftButton.wasPressedThisFrame;
       bool spacePressed = Keyboard.current.spaceKey.wasPressedThisFrame;
 
@@ -60,9 +63,15 @@ namespace Game._Scripts {
       }
     }
 
-    private void OnGameOver() {
+    private void OnGameOver()
+    {
       _isGameOver = true;
     }
+    
+    private void OnGameStarted() {
+      _isGameStart = true;
+    }
+
 
     private void OnRestartGame() {
       _lastButtonPressed = HitButton.None;
@@ -71,6 +80,7 @@ namespace Game._Scripts {
 
 
     private void OnDisable() {
+      GameManager.OnGameStarted -= OnGameStarted;
       GameManager.OnGameOver -= OnGameOver;
       GameManager.OnRestartGame -= OnRestartGame;
     }

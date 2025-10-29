@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,6 +24,8 @@ namespace Game._Scripts {
 
     [SerializeField]
     private GameObject gameOverPanel;
+    [SerializeField]
+    private GameObject mainMenuPanel;
 
     private float _gameTime;
     [SerializeField]
@@ -34,14 +37,21 @@ namespace Game._Scripts {
 
     private bool _waitingForRestart;
 
+    private bool _isGameStart;
+
     private void OnEnable() {
       HammerHitController.OnNonGlitchingImageHit += EndGame;
       HammerHitController.OnRepeatingButtonsHit += EndGame;
       DisplayManager.OnGlitchMiss += EndGame;
     }
 
-    private void Start() {
+    private void StartGame()
+    {
       OnGameStarted?.Invoke();
+      Time.timeScale = 1f;
+      _isGameStart = true;
+      mainMenuPanel.SetActive(false);
+      DisplayManager.Instance.SetRandomImage();
     }
 
     private void EndGame() {
@@ -54,24 +64,41 @@ namespace Game._Scripts {
 
 
     private void Update() {
-      if (_waitingForRestart) {
-        if (Keyboard.current.fKey.wasPressedThisFrame) {
-          RestartGame();
-          return;
-        }
+      if (!_isGameStart)
+      {
+        Time.timeScale = 0f;
+        if (Keyboard.current.fKey.wasPressedThisFrame)
+          {
+            StartGame();
+            return;
+          }
       }
-
-      _gameTime += Time.deltaTime;
-
-      if (_gameTime >= delayTime) {
-        _gameTime = 0f;
-        // Debug.Log("Timer finished!");
-        DisplayManager.Instance.SetRandomImage();
-        if (delayTime > minDelayTime) {
-          delayTime -= delayReduction;
+      else
+      {
+        if (_waitingForRestart)
+        {
+          if (Keyboard.current.fKey.wasPressedThisFrame)
+          {
+            RestartGame();
+            return;
+          }
         }
-        else {
-          delayTime = minDelayTime;
+
+        _gameTime += Time.deltaTime;
+
+        if (_gameTime >= delayTime)
+        {
+          _gameTime = 0f;
+          // Debug.Log("Timer finished!");
+          DisplayManager.Instance.SetRandomImage();
+          if (delayTime > minDelayTime)
+          {
+            delayTime -= delayReduction;
+          }
+          else
+          {
+            delayTime = minDelayTime;
+          }
         }
       }
     }
