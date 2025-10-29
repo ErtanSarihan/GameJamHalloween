@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,6 +20,8 @@ namespace Game._Scripts {
     public static event Action OnGameOver;
     public static event Action OnRestartGame;
 
+    [SerializeField]
+    private DifficultyManager difficultyManager;
 
     [SerializeField]
     private GameObject gameOverPanel;
@@ -30,10 +31,6 @@ namespace Game._Scripts {
     private float _gameTime;
     [SerializeField]
     private float delayTime = 2f;
-    [SerializeField]
-    private float minDelayTime = 0.4f; // Minimum delay to prevent too fast gameplay
-    [SerializeField]
-    private float delayReduction = .1f;
 
     private bool _waitingForRestart;
 
@@ -45,8 +42,7 @@ namespace Game._Scripts {
       DisplayManager.OnGlitchMiss += EndGame;
     }
 
-    private void StartGame()
-    {
+    private void StartGame() {
       OnGameStarted?.Invoke();
       Time.timeScale = 1f;
       _isGameStart = true;
@@ -64,21 +60,15 @@ namespace Game._Scripts {
 
 
     private void Update() {
-      if (!_isGameStart)
-      {
+      if (!_isGameStart) {
         Time.timeScale = 0f;
-        if (Keyboard.current.fKey.wasPressedThisFrame)
-          {
-            StartGame();
-            return;
-          }
+        if (Keyboard.current.fKey.wasPressedThisFrame) {
+          StartGame();
+        }
       }
-      else
-      {
-        if (_waitingForRestart)
-        {
-          if (Keyboard.current.fKey.wasPressedThisFrame)
-          {
+      else {
+        if (_waitingForRestart) {
+          if (Keyboard.current.fKey.wasPressedThisFrame) {
             RestartGame();
             return;
           }
@@ -86,19 +76,11 @@ namespace Game._Scripts {
 
         _gameTime += Time.deltaTime;
 
-        if (_gameTime >= delayTime)
-        {
+        if (_gameTime >= delayTime) {
           _gameTime = 0f;
           // Debug.Log("Timer finished!");
           DisplayManager.Instance.SetRandomImage();
-          if (delayTime > minDelayTime)
-          {
-            delayTime -= delayReduction;
-          }
-          else
-          {
-            delayTime = minDelayTime;
-          }
+          delayTime = difficultyManager.GetCurrentDelay();
         }
       }
     }
