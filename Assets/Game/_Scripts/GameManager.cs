@@ -91,6 +91,7 @@ namespace Game._Scripts {
       _waitingForRestart = false;
       _gameTime = 0f;
       gameOverPanel.SetActive(false);
+      delayTime = 2f;
     }
 
     private void OnDisable() {

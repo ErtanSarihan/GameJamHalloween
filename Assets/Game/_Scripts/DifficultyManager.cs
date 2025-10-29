@@ -15,6 +15,11 @@ namespace Game._Scripts {
 
     private void OnEnable() {
       GameManager.OnGameStarted += OnGameStarted;
+      GameManager.OnRestartGame += OnRestartGame;
+    }
+
+    private void OnRestartGame() {
+      _gameStartTime = Time.time;
     }
 
     private void OnGameStarted() {
@@ -40,6 +45,8 @@ namespace Game._Scripts {
 
     private void OnDisable() {
       GameManager.OnGameStarted -= OnGameStarted;
+      GameManager.OnRestartGame -= OnRestartGame;
+      
     }
   }
 }
