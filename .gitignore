@@ -97,3 +97,11 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Additional Windows-specific and OS housekeeping files
+Thumbs.db
+desktop.ini
+
+# Unity crash dumps or temp build files
+*.stackdump
+*.tmp
